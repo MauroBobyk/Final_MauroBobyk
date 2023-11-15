@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+route::view('PanelUsuario',"PanelUsuario")->name('PanelUsuario');
+route::post('')
