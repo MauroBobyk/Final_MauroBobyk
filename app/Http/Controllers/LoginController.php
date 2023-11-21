@@ -16,16 +16,27 @@ $user->name = $request->name;
 $user->password = Hash::make($request->password);
 $user->save();  
 auth::login($user);
-return redirect(route(''));
+return redirect(route('PanelUsuario'));
 }
 
 public function login (Request $request){
 
-    $user = new User();
-    $user->name = $request->name;
+   $credentials =[
+    "name"=>$request->name,
+    "password"=>$request->password,];
+
+    $remember=($request->has('remember')?true:false);
     
+    if(Auth::attempt($credentials,$remember)){
+
+        $request->session()->regenerate();
+        return redirect()->intended(route('PanelUsuario'));
+
+    }else{return redirect('welcome');}
 }
+
 public function logout (Request $request){
+    auth::logout();
 $request->session()->invalidate();
 $request->session()->regenerateToken();
 return redirect(route('welcome'));
